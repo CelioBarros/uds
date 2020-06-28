@@ -43,12 +43,12 @@ public class SeedConfig {
             flavor1.setExtra_time(0);
 
             Flavor flavor2 = new Flavor();
-            flavor2.setId(1L);
+            flavor2.setId(2L);
             flavor2.setName("Banana");
             flavor2.setExtra_time(0);
 
             Flavor flavor3 = new Flavor();
-            flavor3.setId(1L);
+            flavor3.setId(3L);
             flavor3.setName("Kiwi");
             flavor3.setExtra_time(5);
 
