@@ -11,18 +11,22 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Acai {
+public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "flavor")
+    @Column(name = "acai")
     @NonNull
-    private Flavor flavor;
+    private Acai acai;
 
-    @Column(name = "size")
+    @Column(name = "setup_time")
     @NonNull
-    private Size size;
+    private Integer setup_time;
+
+    @Column(name = "value")
+    @NonNull
+    private Integer value;
 }
