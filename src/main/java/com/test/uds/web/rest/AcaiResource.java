@@ -1,15 +1,10 @@
 package com.test.uds.web.rest;
 
-import com.querydsl.core.types.Predicate;
-import com.test.uds.domain.Activity;
-import com.test.uds.service.ActivityService;
+import com.test.uds.domain.Acai;
+import com.test.uds.service.AcaiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -18,31 +13,31 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-public class ActivityResource {
+public class AcaiResource {
 
-    private final Logger log = LoggerFactory.getLogger(ActivityResource.class);
+    private final Logger log = LoggerFactory.getLogger(AcaiResource.class);
 
 
-    private final ActivityService activityService;
+    private final AcaiService acaiService;
 
-    public ActivityResource(ActivityService activityService) {
-        this.activityService = activityService;
+    public AcaiResource(AcaiService acaiService) {
+        this.acaiService = acaiService;
     }
 
     /**
      * POST  /activities : Create a new activity.
      *
-     * @param activity the activity to create
+     * @param acai the activity to create
      * @return the ResponseEntity with status 201 (Created) and with body the new activity,
      * or with status 400 (Bad Request) if the activity has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/activities")
-    public ResponseEntity<Activity> createActivity(
-            @RequestBody Activity activity) throws URISyntaxException {
+    public ResponseEntity<Acai> createActivity(
+            @RequestBody Acai acai) throws URISyntaxException {
 
-        log.debug("REST request to save Activity : {}", activity);
-        Activity result = activityService.create(activity);
+        log.debug("REST request to save Activity : {}", acai);
+        Acai result = acaiService.create(acai);
         return ResponseEntity.created(new URI("/api/activities/" + result.getId()))
                 .body(result);
     }
@@ -55,9 +50,9 @@ public class ActivityResource {
      * or with status 404 (Not Found)
      */
     @GetMapping("/activities/{id}")
-    public ResponseEntity<Activity> getActivityById(@PathVariable Long id) {
+    public ResponseEntity<Acai> getActivityById(@PathVariable Long id) {
         log.debug("REST request to get Activity : {}", id);
-        Optional<Activity> result = activityService.getById(id);
+        Optional<Acai> result = acaiService.getById(id);
         return (!result.isPresent()) ?
                 ResponseEntity.notFound().build() :
                 ResponseEntity.ok().body(result.get());
@@ -66,17 +61,17 @@ public class ActivityResource {
     /**
      * PUT  /activities : Updates an existing activity.
      *
-     * @param activity the activity to update
+     * @param acai the activity to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated activity,
      * or with status 400 (Bad Request) if the activity is not valid,
      * or with status 500 (Internal Server Error) if the activity couldn't be updated
      */
     @PutMapping("/activities")
-    public ResponseEntity<Activity> updateActivity(
-            @RequestBody Activity activity) {
+    public ResponseEntity<Acai> updateActivity(
+            @RequestBody Acai acai) {
 
-        log.debug("REST request to update Activity : {}", activity);
-        Activity result = activityService.update(activity);
+        log.debug("REST request to update Activity : {}", acai);
+        Acai result = acaiService.update(acai);
         return ResponseEntity.ok()
                 .body(result);
     }
@@ -90,7 +85,7 @@ public class ActivityResource {
     @DeleteMapping("/activities/{id}")
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
         log.debug("REST request to delete Activity: {}", id);
-        activityService.delete(id);
+        acaiService.delete(id);
         return ResponseEntity.ok().build();
     }
 
