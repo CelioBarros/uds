@@ -1,7 +1,9 @@
 package com.test.uds.config;
 
+import com.test.uds.domain.Customization;
 import com.test.uds.domain.Flavor;
 import com.test.uds.domain.Size;
+import com.test.uds.repository.CustomizationRepository;
 import com.test.uds.repository.FlavorRepository;
 import com.test.uds.repository.SizeRepository;
 import org.slf4j.Logger;
@@ -21,6 +23,8 @@ public class SeedConfig {
 
     private final Logger logSize = LoggerFactory.getLogger(Size.class);
 
+    private final Logger logCustomization = LoggerFactory.getLogger(Customization.class);
+
 
     @Resource
     private FlavorRepository flavorRepository;
@@ -28,10 +32,14 @@ public class SeedConfig {
     @Resource
     private SizeRepository sizeRepository;
 
+    @Resource
+    private CustomizationRepository customizationRepository;
+
     @EventListener
     public void seedData(ContextRefreshedEvent event) {
         seedFlavor();
         seedSize();
+        seedCustomization();
     }
 
     private void seedFlavor() {
@@ -86,6 +94,35 @@ public class SeedConfig {
             logSize.info("Size Seeded");
         } else {
             logSize.info("Size Seeding Not Required");
+        }
+    }
+
+    private void seedCustomization() {
+        List<Customization> customizationList = customizationRepository.findAll();
+        if(customizationList == null || customizationList.size() <= 0) {
+            Customization customization1 = new Customization();
+            customization1.setId(1L);
+            customization1.setName("granola");
+            customization1.setExtra_time(0);
+            customization1.setExtra_value(0);
+
+            Customization customization2 = new Customization();
+            customization2.setId(2L);
+            customization2.setName("paçoca");
+            customization2.setExtra_time(3);
+            customization2.setExtra_value(3);
+
+            Customization customization3 = new Customization();
+            customization3.setId(3L);
+            customization3.setName("leite ninho");
+            customization3.setExtra_time(0);
+            customization3.setExtra_value(3);
+
+            customizationRepository.saveAll(Arrays.asList(customization1, customization2, customization3));
+
+            logCustomization.info("Customization Seeded");
+        } else {
+            logCustomization.info("Customization Not Required");
         }
     }
 }
