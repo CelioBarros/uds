@@ -18,13 +18,11 @@ public class Acai {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "flavor_id")
-    @NonNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "flavor_id", unique = false, nullable = false, insertable = false, updatable = false)
     private Flavor flavor;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "size_id")
-    @NonNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "flavor_id", unique = false, nullable = false, insertable = false, updatable = false)
     private Size size;
 }
