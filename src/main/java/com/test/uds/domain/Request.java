@@ -18,8 +18,8 @@ public class Request {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "acai")
-    @NonNull
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "acai_id")
     private Acai acai;
 
     @Column(name = "setup_time")
