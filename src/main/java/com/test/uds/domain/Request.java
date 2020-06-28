@@ -18,7 +18,7 @@ public class Request {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "acai_id", nullable = false, insertable = true, updatable = true)
     private Acai acai;
 

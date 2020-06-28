@@ -19,10 +19,10 @@ public class Acai {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "flavor_id", unique = false, nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "flavor_id", unique = false, nullable = true, insertable = true, updatable = true)
     private Flavor flavor;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "flavor_id", unique = false, nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "size_id", unique = false, nullable = true, insertable = true, updatable = true)
     private Size size;
 }
