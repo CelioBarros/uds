@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/uds
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+application:
+  ui:
+    urls: http://localhost:4200, http://localhost:5000
+server:
+  port: 8080
