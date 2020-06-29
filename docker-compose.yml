@@ -1,18 +1,26 @@
 version: '3'
 services:
   docker-app:
-    image: celiobarros/uds
+    build: .
     container_name: docker-app
     ports:
       - "8080:8080"
     depends_on:
       - docker-postgres
+    networks:
+      - application
+
   docker-postgres:
     image: postgres:10.4
     container_name: docker-postgres
     ports:
       - "5432:5432"
+    networks:
+      - application
     environment:
       - POSTGRES_DB=uds
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+networks:
+  application:
