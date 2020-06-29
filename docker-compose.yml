@@ -2,12 +2,14 @@ version: '3'
 services:
   docker-app:
     image: celiobarros/uds
+    container_name: docker-app
     ports:
       - "8080:8080"
     depends_on:
       - docker-postgres
   docker-postgres:
     image: postgres:11
+    container_name: docker-postgres
     environment:
       - POSTGRES_DB=uds
       - POSTGRES_USER=postgres
