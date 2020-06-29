@@ -10,6 +10,8 @@ services:
   docker-postgres:
     image: postgres:10.4
     container_name: docker-postgres
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=uds
       - POSTGRES_USER=postgres
