@@ -51,12 +51,4 @@ public class RequestService {
     public Optional<Request> getById(Long id) {
         return requestRepository.findById(id);
     }
-
-    public Request update(Request request) {
-        return requestRepository.save(request);
-    }
-
-    public void delete(Long id) {
-        requestRepository.deleteById(id);
-    }
 }
