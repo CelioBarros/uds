@@ -88,5 +88,25 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<logback.loglevel>DEBUG</logback.loglevel>
+				<war.name>dev</war.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<logback.loglevel>INFO</logback.loglevel>
+				<war.name>prod</war.name>
+			</properties>
+		</profile>
+	</profiles>
+
 
 </project>
