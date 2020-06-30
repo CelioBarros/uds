@@ -129,14 +129,8 @@ public class UdsApplicationTests {
     @Transactional
     public void testSaveRequestWithoutCustomization(){
         int oldRequestListSize = requestRepository.findAll().size();
-        Request request = new Request();
-        request.setAcai(new Acai());
-        request.getAcai().setSize(new Size());
-        request.getAcai().setFlavor(new Flavor());
-        request.getAcai().getSize().setId(1L);
-        request.getAcai().getFlavor().setId(1L);
 
-        Request savedRequest = requestService.create(request);
+        Request savedRequest = saveRequest(new HashSet());
         int newRequestListSize = requestRepository.findAll().size();
 
         Assertions.assertThat(oldRequestListSize + 1).isEqualTo(newRequestListSize);
@@ -150,10 +144,7 @@ public class UdsApplicationTests {
     @Transactional
     public void testSaveRequestWithCustomization(){
         int oldRequestListSize = requestRepository.findAll().size();
-        Request request = new Request();
-        request.setAcai(new Acai());
-        request.getAcai().setSize(new Size());
-        request.getAcai().setFlavor(new Flavor());
+
         Set<Customization> customizationSet = new HashSet();
         Customization customization1 = new Customization();
         customization1.setId(1L);
@@ -164,11 +155,8 @@ public class UdsApplicationTests {
         customizationSet.add(customization1);
         customizationSet.add(customization2);
         customizationSet.add(customization3);
-        request.getAcai().setCustomizations(customizationSet);
-        request.getAcai().getSize().setId(1L);
-        request.getAcai().getFlavor().setId(1L);
 
-        Request savedRequest = requestService.create(request);
+        Request savedRequest = saveRequest(customizationSet);
         int newRequestListSize = requestRepository.findAll().size();
 
         Assertions.assertThat(oldRequestListSize + 1).isEqualTo(newRequestListSize);
@@ -181,14 +169,7 @@ public class UdsApplicationTests {
     @Test
     @Transactional
     public void testGetRequestById(){
-        Request request = new Request();
-        request.setAcai(new Acai());
-        request.getAcai().setSize(new Size());
-        request.getAcai().setFlavor(new Flavor());
-        request.getAcai().getSize().setId(1L);
-        request.getAcai().getFlavor().setId(1L);
-
-        Request savedRequest = requestService.create(request);
+        Request savedRequest = saveRequest(new HashSet());
         Request gettedRequest = requestService.getById(savedRequest.getId()).get();
 
         Assertions.assertThat(gettedRequest.getSetup_time()).isEqualTo(savedRequest.getSetup_time());
@@ -202,5 +183,16 @@ public class UdsApplicationTests {
         Optional<Request> request = requestService.getById(1980218309128310230L);
 
         Assertions.assertThat(request).isEmpty();
+    }
+
+    private Request saveRequest(Set<Customization> customizationSet) {
+        Request request = new Request();
+        request.setAcai(new Acai());
+        request.getAcai().setSize(new Size());
+        request.getAcai().setFlavor(new Flavor());
+        request.getAcai().getSize().setId(1L);
+        request.getAcai().getFlavor().setId(1L);
+        request.getAcai().setCustomizations(customizationSet);
+        return requestService.create(request);
     }
 }
