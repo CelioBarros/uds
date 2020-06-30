@@ -22,6 +22,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -177,4 +178,29 @@ public class UdsApplicationTests {
         Assertions.assertThat(savedRequest.getAcai().getCustomizations().size()).isEqualTo(3);
     }
 
+    @Test
+    @Transactional
+    public void testGetRequestById(){
+        Request request = new Request();
+        request.setAcai(new Acai());
+        request.getAcai().setSize(new Size());
+        request.getAcai().setFlavor(new Flavor());
+        request.getAcai().getSize().setId(1L);
+        request.getAcai().getFlavor().setId(1L);
+
+        Request savedRequest = requestService.create(request);
+        Request gettedRequest = requestService.getById(savedRequest.getId()).get();
+
+        Assertions.assertThat(gettedRequest.getSetup_time()).isEqualTo(savedRequest.getSetup_time());
+        Assertions.assertThat(gettedRequest.getValue()).isEqualTo(savedRequest.getValue());
+        Assertions.assertThat(gettedRequest.getAcai()).isEqualTo(savedRequest.getAcai());
+    }
+
+    @Test
+    @Transactional
+    public void testGetUnknownRequest(){
+        Optional<Request> request = requestService.getById(1980218309128310230L);
+
+        Assertions.assertThat(request).isEmpty();
+    }
 }
