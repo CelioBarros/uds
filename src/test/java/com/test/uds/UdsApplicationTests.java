@@ -1,11 +1,11 @@
 package com.test.uds;
 
-import com.test.uds.domain.Customization;
-import com.test.uds.domain.Flavor;
-import com.test.uds.domain.Size;
+import com.test.uds.domain.*;
 import com.test.uds.repository.CustomizationRepository;
 import com.test.uds.repository.FlavorRepository;
+import com.test.uds.repository.RequestRepository;
 import com.test.uds.repository.SizeRepository;
+import com.test.uds.service.RequestService;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -17,9 +17,12 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,6 +37,12 @@ public class UdsApplicationTests {
 
     @Autowired
     CustomizationRepository customizationRepository;
+
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    RequestService requestService;
 
     @ClassRule
     public static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres")
@@ -112,6 +121,60 @@ public class UdsApplicationTests {
         Assertions.assertThat(customizationList.get(2).getId()).isEqualTo(3L);
         Assertions.assertThat(customizationList.get(2).getExtra_value()).isEqualTo(3);
         Assertions.assertThat(customizationList.get(2).getExtra_time()).isEqualTo(0);
+    }
+
+
+    @Test
+    @Transactional
+    public void testSaveRequestWithoutCustomization(){
+        int oldRequestListSize = requestRepository.findAll().size();
+        Request request = new Request();
+        request.setAcai(new Acai());
+        request.getAcai().setSize(new Size());
+        request.getAcai().setFlavor(new Flavor());
+        request.getAcai().getSize().setId(1L);
+        request.getAcai().getFlavor().setId(1L);
+
+        Request savedRequest = requestService.create(request);
+        int newRequestListSize = requestRepository.findAll().size();
+
+        Assertions.assertThat(oldRequestListSize + 1).isEqualTo(newRequestListSize);
+
+        Assertions.assertThat(savedRequest.getSetup_time()).isEqualTo(5);
+        Assertions.assertThat(savedRequest.getValue()).isEqualTo(10);
+        Assertions.assertThat(savedRequest.getAcai().getCustomizations().size()).isEqualTo(0);
+    }
+
+    @Test
+    @Transactional
+    public void testSaveRequestWithCustomization(){
+        int oldRequestListSize = requestRepository.findAll().size();
+        Request request = new Request();
+        request.setAcai(new Acai());
+        request.getAcai().setSize(new Size());
+        request.getAcai().setFlavor(new Flavor());
+        Set<Customization> customizationSet = new HashSet();
+        Customization customization1 = new Customization();
+        customization1.setId(1L);
+        Customization customization2 = new Customization();
+        customization2.setId(2L);
+        Customization customization3 = new Customization();
+        customization3.setId(3L);
+        customizationSet.add(customization1);
+        customizationSet.add(customization2);
+        customizationSet.add(customization3);
+        request.getAcai().setCustomizations(customizationSet);
+        request.getAcai().getSize().setId(1L);
+        request.getAcai().getFlavor().setId(1L);
+
+        Request savedRequest = requestService.create(request);
+        int newRequestListSize = requestRepository.findAll().size();
+
+        Assertions.assertThat(oldRequestListSize + 1).isEqualTo(newRequestListSize);
+
+        Assertions.assertThat(savedRequest.getSetup_time()).isEqualTo(8);
+        Assertions.assertThat(savedRequest.getValue()).isEqualTo(16);
+        Assertions.assertThat(savedRequest.getAcai().getCustomizations().size()).isEqualTo(3);
     }
 
 }
