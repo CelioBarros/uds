@@ -13,3 +13,6 @@ Go to the root folder and run the command `./mvnw clean package`. It will create
 ### Starting the service in a container
 To run the generated file in a container, simply run `docker-compose up`.
 For more informations about the docker compose usage, please go to the [docs](https://docs.docker.com/compose/).
+
+### To run test
+`./mvnw test`
